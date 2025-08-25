@@ -1,0 +1,142 @@
+/* Background wrapper */
+.auth-layout {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('/images/auth-bg.jpg') no-repeat center center/cover;
+  position: relative;
+  padding: 1rem; /* ✅ prevent form from touching screen edges */
+  box-sizing: border-box;
+}
+
+/* Dark overlay */
+.auth-layout::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(2px);
+}
+
+/* Glass form */
+.auth-form {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 380px; /* ✅ keeps it centered with flex */
+  margin: auto;     /* ✅ ensures centering on mobile */
+  color: #fff;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  animation: fadeIn 0.8s ease;
+  box-sizing: border-box;
+}
+
+/* Inputs */
+.auth-form input,
+.auth-form select {
+  padding: 0.9rem;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  width: 100%; /* ✅ prevents shrinking on mobile */
+  box-sizing: border-box;
+}
+
+.auth-form input::placeholder,
+.auth-form select {
+  color: #ddd;
+}
+
+/* Buttons */
+.auth-form .btn {
+  background: linear-gradient(135deg, #4CAF50, #2e7d32);
+  color: white;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.auth-form .btn:hover {
+  background: linear-gradient(135deg, #45a049, #1b5e20);
+  transform: translateY(-2px);
+}
+
+/* Error */
+.error {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 📱 Mobile responsive */
+@media (max-width: 600px) {
+  .auth-form {
+    padding: 1.5rem;
+    max-width: 100%;  /* ✅ take full width but still centered */
+  }
+
+  .auth-form input,
+  .auth-form select,
+  .auth-form .btn {
+    font-size: 0.95rem;
+    padding: 0.8rem;
+  }
+}
+
+
+/* Header inside form */
+.auth-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.auth-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.auth-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0.3rem 0;
+  color: #fff;
+}
+
+.auth-header .subtitle {
+  font-size: 0.9rem;
+  color: #bbb;
+  margin: 0;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .auth-header h2 {
+    font-size: 1.2rem;
+  }
+  .auth-header .subtitle {
+    font-size: 0.8rem;
+  }
+}

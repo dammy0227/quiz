@@ -1,0 +1,99 @@
+.instructor-layout {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  background: whitesmoke;
+  overflow-x: hidden; /* prevent accidental horizontal scroll */
+}
+
+/* Navbar: only visible on mobile */
+.instructor-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #45a049;
+  color: white;
+  padding: 12px 18px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1001;
+}
+
+.menu-btn {
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.navbar-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Main content */
+.instructor-main {
+  flex: 1;
+  padding: 20px;
+  margin-top: 55px; /* Push content below mobile navbar */
+  transition: filter 0.3s;
+  min-width: 0; /* prevents flex children from causing overflow */
+  box-sizing: border-box;
+}
+
+/* Overlay when sidebar opens */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 100;
+}
+
+/* Typography */
+h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+/* ✅ Mobile adjustments */
+@media (max-width: 767px) {
+  h2 {
+    font-size: 18px; /* smaller headings on mobile */
+  }
+
+  .instructor-main {
+    padding: 15px;
+    margin-top: 60px;
+    overflow-x: auto; /* allow horizontal scroll if content is wider */
+  }
+
+  /* Ensure child elements don’t overflow */
+  .instructor-main > * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+/* ✅ Desktop: show sidebar, hide navbar */
+@media (min-width: 768px) {
+  .instructor-navbar {
+    display: none;
+  }
+
+  .instructor-main {
+    margin-left: 220px; /* Sidebar width */
+    margin-top: 0;
+    height: 100vh;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+}

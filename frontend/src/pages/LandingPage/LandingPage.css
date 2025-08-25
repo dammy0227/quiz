@@ -1,0 +1,100 @@
+/* LandingPage.css */
+
+/* Basic layout */
+.landing-layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  text-align: center;
+  background-color: #4CAF50; /* Page background */
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+}
+
+.landing-layout h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.landing-layout p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+/* Buttons container */
+.landing-buttons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.landing-buttons button {
+  background: linear-gradient(135deg, #4CAF50, #81C784); /* Gradient green */
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 180px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.landing-buttons button:hover {
+  background: linear-gradient(135deg, #45a049, #66bb6a); /* Hover gradient */
+  transform: translateY(-2px);
+}
+
+/* Login link */
+.login-link {
+  color: #ffd700;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: all 0.3s ease;
+}
+
+.login-link:hover {
+  color: #fff;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .landing-layout h1 {
+    font-size: 2rem;
+  }
+
+  .landing-layout p {
+    font-size: 1rem;
+  }
+
+  .landing-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .landing-buttons button {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-layout h1 {
+    font-size: 1.8rem;
+  }
+
+  .landing-layout p {
+    font-size: 0.95rem;
+  }
+
+  .landing-buttons button {
+    font-size: 0.95rem;
+    padding: 10px 20px;
+  }
+}

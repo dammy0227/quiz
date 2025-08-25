@@ -1,0 +1,73 @@
+.sidebar {
+  width: 220px;
+  background-color: #45a049;
+  color: white;
+  height: 100vh;
+  flex-shrink: 0;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: transform 0.3s ease;
+  z-index: 1002;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+.sidebar-brand {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.cancel-icon {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: white;
+}
+
+.sidebar-links {
+  list-style: none;
+  padding: 10px 0;
+  margin-top: 20px;
+}
+
+.sidebar-links li {
+  margin-bottom: 15px;
+}
+
+.sidebar-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.sidebar-links a:hover {
+  color: #4CAF50;
+  text-decoration: underline;
+}
+
+/* Mobile responsive: sidebar hidden by default, slide-in with cancel button */
+@media (max-width: 767px) {
+  .sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+    top: 0;
+    height: 100vh;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .cancel-icon {
+    display: inline-block;
+  }
+}

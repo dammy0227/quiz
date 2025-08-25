@@ -1,0 +1,25 @@
+.quiz-card {
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  max-width: 300px; /* consistent width */
+}
+.quiz-card h3 {
+  margin-bottom: 8px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.quiz-card p {
+  margin-bottom: 12px;
+  color: #555;
+  text-align: center;
+  word-wrap: break-word; /* prevent overflow */
+}

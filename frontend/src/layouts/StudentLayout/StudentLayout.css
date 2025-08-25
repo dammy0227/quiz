@@ -1,0 +1,125 @@
+.student-layout {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+/* Navbar: only mobile */
+.student-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #45a049;
+  color: white;
+  padding: 12px 18px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1001;
+}
+
+.menu-btn {
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.navbar-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Sidebar */
+.student-sidebar {
+  width: 220px;
+  height: 100vh;
+  background-color: #45a049;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: fixed; /* keeps it separate from main */
+  top: 0;
+  left: -250px; /* hidden by default for mobile */
+  transition: left 0.3s;
+  z-index: 1002;
+}
+
+.student-sidebar.open {
+  left: 0;
+}
+
+.student-sidebar .sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.student-sidebar .cancel-icon {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.student-sidebar .sidebar-links {
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
+}
+
+.student-sidebar .sidebar-links li {
+  margin-bottom: 15px;
+}
+
+.student-sidebar .sidebar-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.student-sidebar .sidebar-links a:hover {
+  color: #4CAF50;
+  text-decoration: underline;
+}
+
+/* Main content */
+.student-main {
+  flex: 1 1 auto;
+  padding: 20px;
+  background: #f0f0f0;
+  margin-top: 50px; /* push below navbar on mobile */
+  transition: filter 0.3s;
+  min-width: 0; /* allows flex shrinking properly */
+}
+
+/* Mobile overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right:0;
+  bottom:0;
+  background: rgba(0,0,0,0.3);
+  z-index: 100;
+}
+
+/* Desktop: sidebar always visible, navbar hidden */
+@media (min-width: 768px) {
+  .student-navbar {
+    display: none;
+  }
+  .student-sidebar {
+    position: relative; /* part of flex row now */
+    left: 0;
+    height: 100vh;
+  }
+  .student-main {
+    margin-left: 0; /* flex handles spacing */
+    margin-top: 0;
+  }
+}

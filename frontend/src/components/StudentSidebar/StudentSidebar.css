@@ -1,0 +1,35 @@
+.student-sidebar {
+  width: 220px;
+  height: 100vh;
+  background-color: #45a049;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.student-sidebar .sidebar-brand {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.student-sidebar .sidebar-links {
+  list-style: none;
+  padding: 0;
+}
+
+.student-sidebar .sidebar-links li {
+  margin-bottom: 15px;
+}
+
+.student-sidebar .sidebar-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.student-sidebar .sidebar-links a:hover {
+  color: #4CAF50;
+  text-decoration: underline;
+}
