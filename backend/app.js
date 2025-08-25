@@ -13,8 +13,17 @@ import { notFound, errorHandler } from './middleware/errorHandler.js';
 const app = express();
 
 // Middleware
+app.use(cors({
+  origin: [
+    'https://quiz-ruddy-seven.vercel.app', // Vercel frontend
+    "http://localhost:5173"                   // Local dev
+  ],
+  methods: ["GET", "POST"],
+  credentials: true,
+}));
+
+
 app.use(express.json()); // Parse JSON bodies
-app.use(cors()); // Enable CORS for frontend
 app.use(morgan('dev')); // HTTP request logging in dev mode
 
 // Database connection
