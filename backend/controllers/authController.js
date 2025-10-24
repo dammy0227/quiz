@@ -17,7 +17,7 @@ export const register = async (req, res, next) => {
   try {
     const { name, email, password, role, matricNumber, level, department } = req.body;
 
-    // Validate required fields
+    // Basic field validation
     if (!isNotEmpty(name) || !isNotEmpty(email) || !isNotEmpty(password) || !isNotEmpty(role)) {
       return res.status(400).json({ message: 'Name, email, password, and role are required' });
     }
@@ -32,14 +32,20 @@ export const register = async (req, res, next) => {
       });
     }
 
-    // Check existing email
+    // Check email uniqueness
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
       return res.status(400).json({ message: 'Email already in use' });
     }
 
-    // Check existing matric number (for students only)
-    if (role === 'student' && isNotEmpty(matricNumber)) {
+    // If student, validate student-specific fields
+    if (role === 'student') {
+      if (!isNotEmpty(matricNumber) || !isNotEmpty(level) || !isNotEmpty(department)) {
+        return res.status(400).json({
+          message: 'Matric number, level, and department are required for student registration',
+        });
+      }
+
       const existingMatric = await User.findOne({ matricNumber });
       if (existingMatric) {
         return res.status(400).json({ message: 'Matric number already registered' });
@@ -49,7 +55,7 @@ export const register = async (req, res, next) => {
     // Hash password
     const passwordHash = await hashPassword(password);
 
-    // Create new user
+    // Create user based on role
     const user = await User.create({
       name,
       email,
@@ -60,7 +66,7 @@ export const register = async (req, res, next) => {
       department: role === 'student' ? department : undefined,
     });
 
-    // Return response
+    // Return success
     res.status(201).json({
       _id: user._id,
       name: user.name,
@@ -77,26 +83,40 @@ export const register = async (req, res, next) => {
 };
 
 // ============================
-// LOGIN USER (MATRIC + PASSWORD)
+// LOGIN (STUDENT OR INSTRUCTOR)
 // ============================
 export const login = async (req, res, next) => {
   try {
-    const { matricNumber, password } = req.body;
+    const { email, matricNumber, password } = req.body;
 
-    if (!isNotEmpty(matricNumber) || !isNotEmpty(password)) {
-      return res.status(400).json({ message: 'Matric number and password are required' });
+    // Must include password
+    if (!isNotEmpty(password)) {
+      return res.status(400).json({ message: 'Password is required' });
     }
 
-    // Find user by matric number
-    const user = await User.findOne({ matricNumber });
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+    // Determine login type
+    let user;
+
+    if (isNotEmpty(matricNumber)) {
+      // Student login
+      user = await User.findOne({ matricNumber });
+      if (!user || user.role !== 'student') {
+        return res.status(401).json({ message: 'Invalid student credentials' });
+      }
+    } else if (isNotEmpty(email)) {
+      // Instructor login
+      user = await User.findOne({ email });
+      if (!user || user.role !== 'instructor') {
+        return res.status(401).json({ message: 'Invalid instructor credentials' });
+      }
+    } else {
+      return res.status(400).json({ message: 'Email or matric number is required' });
     }
 
     // Compare password
     const isMatch = await comparePassword(password, user.passwordHash);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Invalid password' });
     }
 
     // Return success response
