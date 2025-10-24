@@ -72,7 +72,7 @@ const RegisterStudentPage = () => {
           value={form.level}
           onChange={handleChange}
           required
-          className='select'
+          className=''
         >
           <option value="">Select Level</option>
           <option value="100">100 Level</option>
