@@ -1,10 +1,7 @@
-
-
 /* Glass form */
 .auth-form {
-position: relative;
+  position: relative;
   z-index: 1;
-  /* background: rgba(255, 255, 255, 0.08); */
   border-radius: 16px;
   padding: 2rem;
   width: 100%;
@@ -18,9 +15,8 @@ position: relative;
   gap: 1rem;
   animation: fadeIn 0.8s ease;
   box-sizing: border-box;
-  background-color: red;
+  background: rgba(0, 0, 0, 0.35);
 }
-
 
 /* Inputs */
 .auth-form input,
@@ -32,7 +28,7 @@ position: relative;
   font-size: 1rem;
   background: rgba(255, 255, 255, 0.15);
   color: #fff;
-  width: 100%; /* ✅ prevents shrinking on mobile */
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -66,28 +62,6 @@ position: relative;
   text-align: center;
 }
 
-/* Fade-in animation */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* 📱 Mobile responsive */
-@media (max-width: 600px) {
-  .auth-form {
-    padding: 1.5rem;
-    max-width: 100%;  /* ✅ take full width but still centered */
-  }
-
-  .auth-form input,
-  .auth-form select,
-  .auth-form .btn {
-    font-size: 0.95rem;
-    padding: 0.8rem;
-  }
-}
-
-
 /* Header inside form */
 .auth-header {
   text-align: center;
@@ -114,11 +88,61 @@ position: relative;
   margin: 0;
 }
 
-/* Mobile responsive */
+/* =============================
+   NEW: Toggle Role Buttons
+   ============================= */
+.toggle-role {
+  display: flex;
+  justify-content: center;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.toggle-role button {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-role button.active {
+  background: linear-gradient(135deg, #4CAF50, #2e7d32);
+  color: #fff;
+}
+
+.toggle-role button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 📱 Mobile responsive */
 @media (max-width: 600px) {
+  .auth-form {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+
+  .auth-form input,
+  .auth-form select,
+  .auth-form .btn {
+    font-size: 0.95rem;
+    padding: 0.8rem;
+  }
+
   .auth-header h2 {
     font-size: 1.2rem;
   }
+
   .auth-header .subtitle {
     font-size: 0.8rem;
   }

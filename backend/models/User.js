@@ -6,24 +6,47 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
       required: [true, 'Name is required'],
-      trim: true
+      trim: true,
     },
     email: {
       type: String,
       required: [true, 'Email is required'],
       unique: true,
       lowercase: true,
-      match: [/\S+@\S+\.\S+/, 'Invalid email format']
+      match: [/\S+@\S+\.\S+/, 'Invalid email format'],
     },
     passwordHash: {
       type: String,
-      required: [true, 'Password is required']
+      required: [true, 'Password is required'],
     },
     role: {
       type: String,
       enum: ['student', 'instructor'],
-      default: 'student'
-    }
+      default: 'student',
+    },
+    matricNumber: {
+      type: String,
+      required: function () {
+        return this.role === 'student';
+      },
+      unique: true,
+      trim: true,
+      uppercase: true,
+    },
+    level: {
+      type: String,
+      enum: ['100', '200', '300', '400', '500'],
+      required: function () {
+        return this.role === 'student';
+      },
+    },
+    department: {
+      type: String,
+      required: function () {
+        return this.role === 'student';
+      },
+      trim: true,
+    },
   },
   { timestamps: true }
 );

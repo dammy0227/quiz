@@ -10,13 +10,16 @@ const generateToken = (id, role) => {
   return jwt.sign({ id, role }, env.JWT_SECRET, { expiresIn: env.TOKEN_EXPIRES_IN });
 };
 
-// Register new user
+// ============================
+// REGISTER NEW USER
+// ============================
 export const register = async (req, res, next) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, matricNumber, level, department } = req.body;
 
-    if (!isNotEmpty(name) || !isNotEmpty(email) || !isNotEmpty(password)) {
-      return res.status(400).json({ message: 'All fields are required' });
+    // Validate required fields
+    if (!isNotEmpty(name) || !isNotEmpty(email) || !isNotEmpty(password) || !isNotEmpty(role)) {
+      return res.status(400).json({ message: 'Name, email, password, and role are required' });
     }
 
     if (!isValidEmail(email)) {
@@ -24,54 +27,97 @@ export const register = async (req, res, next) => {
     }
 
     if (!isStrongPassword(password)) {
-      return res.status(400).json({ message: 'Password must be at least 8 chars, include uppercase, lowercase, and number' });
+      return res.status(400).json({
+        message: 'Password must be at least 8 characters and include uppercase, lowercase, and a number',
+      });
     }
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: 'Email already in use' });
+    // Check existing email
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+      return res.status(400).json({ message: 'Email already in use' });
+    }
 
+    // Check existing matric number (for students only)
+    if (role === 'student' && isNotEmpty(matricNumber)) {
+      const existingMatric = await User.findOne({ matricNumber });
+      if (existingMatric) {
+        return res.status(400).json({ message: 'Matric number already registered' });
+      }
+    }
+
+    // Hash password
     const passwordHash = await hashPassword(password);
-    const user = await User.create({ name, email, passwordHash, role });
 
+    // Create new user
+    const user = await User.create({
+      name,
+      email,
+      passwordHash,
+      role,
+      matricNumber: role === 'student' ? matricNumber : undefined,
+      level: role === 'student' ? level : undefined,
+      department: role === 'student' ? department : undefined,
+    });
+
+    // Return response
     res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
-      token: generateToken(user._id, user.role)
+      matricNumber: user.matricNumber,
+      level: user.level,
+      department: user.department,
+      token: generateToken(user._id, user.role),
     });
   } catch (error) {
     next(error);
   }
 };
 
-// Login user
+// ============================
+// LOGIN USER (MATRIC + PASSWORD)
+// ============================
 export const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    if (!isValidEmail(email)) {
-      return res.status(400).json({ message: 'Invalid email format' });
+    const { matricNumber, password } = req.body;
+
+    if (!isNotEmpty(matricNumber) || !isNotEmpty(password)) {
+      return res.status(400).json({ message: 'Matric number and password are required' });
     }
 
-    const user = await User.findOne({ email });
-    if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+    // Find user by matric number
+    const user = await User.findOne({ matricNumber });
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
 
+    // Compare password
     const isMatch = await comparePassword(password, user.passwordHash);
-    if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
 
+    // Return success response
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
-      token: generateToken(user._id, user.role)
+      matricNumber: user.matricNumber,
+      level: user.level,
+      department: user.department,
+      token: generateToken(user._id, user.role),
     });
   } catch (error) {
     next(error);
   }
 };
 
-// Logout (client should remove token)
+// ============================
+// LOGOUT (client removes token)
+// ============================
 export const logout = async (req, res) => {
   res.json({ message: 'Logged out successfully' });
 };

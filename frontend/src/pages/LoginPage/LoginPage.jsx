@@ -1,25 +1,33 @@
+// src/pages/LoginPage/LoginPage.jsx
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import AuthLayout from '../../layouts/AuthLayout/AuthLayout';
 import './LoginPage.css';
 
 const LoginPage = () => {
-  const [form, setForm] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
   const { login } = useAuth();
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  // Default to student login mode
+  const [role, setRole] = useState('student');
+  const [form, setForm] = useState({ matricNumber: '', email: '', password: '' });
+  const [error, setError] = useState('');
+
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
     try {
-      const user = await login(form);
+      // Send only the required credentials depending on role
+      const credentials =
+        role === 'student'
+          ? { matricNumber: form.matricNumber, password: form.password }
+          : { email: form.email, password: form.password };
 
-      // Redirect based on role
+      const user = await login(credentials);
+
+      // Redirect by role
       if (user.role === 'student') {
         window.location.href = '/student/dashboard';
       } else if (user.role === 'instructor') {
@@ -35,22 +43,52 @@ const LoginPage = () => {
   return (
     <AuthLayout>
       <form className="auth-form" onSubmit={handleSubmit}>
-        {/* ✅ Optional logo */}
         <div className="auth-header">
           <h2>Welcome Back 👋</h2>
-          <p className="subtitle">Login to continue your learning journey</p>
+          <p className="subtitle">Login to continue your journey</p>
+        </div>
+
+        {/* Toggle between student and instructor */}
+        <div className="toggle-role">
+          <button
+            type="button"
+            className={role === 'student' ? 'active' : ''}
+            onClick={() => setRole('student')}
+          >
+            Student Login
+          </button>
+          <button
+            type="button"
+            className={role === 'instructor' ? 'active' : ''}
+            onClick={() => setRole('instructor')}
+          >
+            Instructor Login
+          </button>
         </div>
 
         {error && <p className="error">{error}</p>}
-        
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-        />
+
+        {/* Conditionally render form fields */}
+        {role === 'student' ? (
+          <input
+            type="text"
+            name="matricNumber"
+            placeholder="Matric Number"
+            value={form.matricNumber}
+            onChange={handleChange}
+            required
+          />
+        ) : (
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+        )}
+
         <input
           type="password"
           name="password"
@@ -59,6 +97,7 @@ const LoginPage = () => {
           onChange={handleChange}
           required
         />
+
         <button type="submit" className="btn">Login</button>
       </form>
     </AuthLayout>

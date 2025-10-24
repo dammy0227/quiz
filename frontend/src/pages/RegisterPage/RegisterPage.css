@@ -19,6 +19,12 @@
   backdrop-filter: blur(2px);
 }
 
+.subtitle{
+  text-align: center;
+}
+
+
+
 /* Glass form */
 .auth-form {
   position: relative;
@@ -82,6 +88,40 @@
   font-size: 0.9rem;
   text-align: center;
 }
+
+/* Improved dropdown styling */
+.auth-form select {
+  appearance: none; /* removes the default OS arrow */
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.9rem;
+  font-size: 1rem;
+  width: 100%;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 1rem;
+}
+
+/* When focused or hovered */
+.auth-form select:focus,
+.auth-form select:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid #4CAF50;
+}
+
+/* Dropdown options */
+.auth-form select option {
+  background-color: rgba(34, 34, 34, 0.95); /* dark dropdown background */
+  color: #fff; /* white text for readability */
+  padding: 10px;
+}
+
 
 /* Fade-in animation */
 @keyframes fadeIn {
